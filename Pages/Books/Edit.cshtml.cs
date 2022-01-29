@@ -45,6 +45,7 @@ namespace MedrisVlad_WebApp.Pages.Books
             PopulateAssignedCategoryData(_context, Book);
 
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+            ViewData["LibraryID"] = new SelectList(_context.Set<Library>(), "ID", "LibraryName");
             return Page();
         }
 

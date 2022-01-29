@@ -29,20 +29,22 @@
                 @Html.DisplayNameFor(model => model.Book[0].Publisher.PublisherName)
             </th>
             <th>
+             @Html.DisplayNameFor(model => model.Book[0].Library.LibraryName)
+             </th>
+             <th>
              @Html.DisplayNameFor(model => model.Book[0].BookCategories)
              </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.BookD.Books) {
+    @foreach (var item in Model.BookD.Books) {
 
         string selectedRow = "";
          if (item.ID == Model.BookID)
          {
          selectedRow = "table-success";
          }
-
 
         <tr class="@selectedRow">
             <td>
@@ -59,6 +61,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Publisher.PublisherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Library.LibraryName)
             </td>
             <td>
              @{

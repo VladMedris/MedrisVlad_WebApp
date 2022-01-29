@@ -31,7 +31,12 @@ namespace MedrisVlad_WebApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Author")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("LibraryId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(6,2)");
@@ -43,9 +48,13 @@ namespace MedrisVlad_WebApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("LibraryId");
 
                     b.HasIndex("PublisherID");
 
@@ -91,6 +100,22 @@ namespace MedrisVlad_WebApp.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("MedrisVlad_WebApp.Models.Library", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("LibraryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Library");
+                });
+
             modelBuilder.Entity("MedrisVlad_WebApp.Models.Publisher", b =>
                 {
                     b.Property<int>("ID")
@@ -109,11 +134,19 @@ namespace MedrisVlad_WebApp.Migrations
 
             modelBuilder.Entity("MedrisVlad_WebApp.Models.Book", b =>
                 {
+                    b.HasOne("MedrisVlad_WebApp.Models.Library", "Library")
+                        .WithMany("Books")
+                        .HasForeignKey("LibraryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MedrisVlad_WebApp.Models.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Library");
 
                     b.Navigation("Publisher");
                 });
@@ -145,6 +178,11 @@ namespace MedrisVlad_WebApp.Migrations
             modelBuilder.Entity("MedrisVlad_WebApp.Models.Category", b =>
                 {
                     b.Navigation("BookCategories");
+                });
+
+            modelBuilder.Entity("MedrisVlad_WebApp.Models.Library", b =>
+                {
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("MedrisVlad_WebApp.Models.Publisher", b =>

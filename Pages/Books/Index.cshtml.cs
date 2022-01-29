@@ -29,7 +29,9 @@ namespace MedrisVlad_WebApp.Pages.Books
         {
             BookD = new BookData();
 
-            BookD.Books = await _context.Book.Include(b => b.Publisher)
+            BookD.Books = await _context.Book
+             .Include(b => b.Publisher)
+             .Include(b => b.Library)
              .Include(b => b.BookCategories)
              .ThenInclude(b => b.Category)
              .AsNoTracking()

@@ -22,5 +22,7 @@ namespace MedrisVlad_WebApp.Data
         public DbSet<MedrisVlad_WebApp.Models.BookCategory> BookCategory { get; set; }
 
         public DbSet<MedrisVlad_WebApp.Models.Category> Category { get; set; }
+
+        public DbSet<MedrisVlad_WebApp.Models.Library> Library { get; set; }
     }
 }

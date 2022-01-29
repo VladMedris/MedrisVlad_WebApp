@@ -1,20 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MedrisVlad_WebApp.Migrations
 {
-    public partial class Categories : Migration
+    public partial class LibraryName : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "PublisherID",
-                table: "Book",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
@@ -29,6 +23,19 @@ namespace MedrisVlad_WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Library",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LibraryName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Library", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Publisher",
                 columns: table => new
                 {
@@ -39,6 +46,36 @@ namespace MedrisVlad_WebApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Publisher", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Book",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    PublishingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PublisherID = table.Column<int>(type: "int", nullable: false),
+                    LibraryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Book", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Book_Library_LibraryId",
+                        column: x => x.LibraryId,
+                        principalTable: "Library",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Book_Publisher_PublisherID",
+                        column: x => x.PublisherID,
+                        principalTable: "Publisher",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,6 +105,11 @@ namespace MedrisVlad_WebApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Book_LibraryId",
+                table: "Book",
+                column: "LibraryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Book_PublisherID",
                 table: "Book",
                 column: "PublisherID");
@@ -81,38 +123,24 @@ namespace MedrisVlad_WebApp.Migrations
                 name: "IX_BookCategory_CategoryID",
                 table: "BookCategory",
                 column: "CategoryID");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Book_Publisher_PublisherID",
-                table: "Book",
-                column: "PublisherID",
-                principalTable: "Publisher",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Book_Publisher_PublisherID",
-                table: "Book");
-
             migrationBuilder.DropTable(
                 name: "BookCategory");
 
             migrationBuilder.DropTable(
-                name: "Publisher");
+                name: "Book");
 
             migrationBuilder.DropTable(
                 name: "Category");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Book_PublisherID",
-                table: "Book");
+            migrationBuilder.DropTable(
+                name: "Library");
 
-            migrationBuilder.DropColumn(
-                name: "PublisherID",
-                table: "Book");
+            migrationBuilder.DropTable(
+                name: "Publisher");
         }
     }
 }

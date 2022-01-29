@@ -25,5 +25,8 @@ namespace MedrisVlad_WebApp.Models
         public Publisher? Publisher { get; set; }
         public ICollection<BookCategory>? BookCategories { get; set; }
 
+        public int LibraryId { get; set; }
+        public Library? Library { get; set; }
+
     }
 }

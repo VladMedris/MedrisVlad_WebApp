@@ -34,9 +34,12 @@
              <span asp-validation-for="Book.PublishingDate" class="textdanger"></span>
             </div>
             <label asp-for="Book.PublisherID" class="control-label">Publisher Name</label>
-             <select asp-for="Book.PublisherID" class="form-control" asp-items="ViewBag.PublisherID">
-            </select>
+             <select asp-for="Book.PublisherID" class="form-control" asp-items="ViewBag.PublisherID"></select>
              <span asp-validation-for="Book.PublisherID" class="text-danger"></span>
+
+             <label asp-for="Book.LibraryId" class="control-label">Library Name</label>
+             <select asp-for="Book.LibraryId" class="form-control" asp-items="ViewBag.LibraryId"></select>
+             <span asp-validation-for="Book.LibraryId" class="text-danger"></span>
 
              <div class="form-group">
                  <div class="table">

@@ -23,6 +23,7 @@ namespace MedrisVlad_WebApp.Pages.Books
         public IActionResult OnGet()
         {
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+            ViewData["LibraryId"] = new SelectList(_context.Set<Library>(), "ID", "LibraryName");
 
             var book = new Book();
             book.BookCategories = new List<BookCategory>();
@@ -54,7 +55,9 @@ namespace MedrisVlad_WebApp.Pages.Books
                  newBook,
                  "Book",
                  i => i.Title, i => i.Author,
-                 i => i.Price, i => i.PublishingDate, i => i.PublisherID))
+                 i => i.Price, i => i.PublishingDate, 
+                 i => i.LibraryId,
+                 i => i.PublisherID))
             {
                 _context.Book.Add(newBook);
                 await _context.SaveChangesAsync();
