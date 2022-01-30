@@ -33,6 +33,7 @@ namespace MedrisVlad_WebApp.Pages.Books
 
             Book = await _context.Book
              .Include(b => b.Publisher)
+             .Include(b => b.Library)
              .Include(b => b.BookCategories).ThenInclude(b => b.Category)
              .AsNoTracking()
              .FirstOrDefaultAsync(m => m.ID == id);
@@ -59,6 +60,7 @@ namespace MedrisVlad_WebApp.Pages.Books
             }
             var bookToUpdate = await _context.Book
              .Include(i => i.Publisher)
+             .Include(b => b.Library)
              .Include(i => i.BookCategories)
              .ThenInclude(i => i.Category)
              .FirstOrDefaultAsync(s => s.ID == id);
@@ -72,7 +74,8 @@ namespace MedrisVlad_WebApp.Pages.Books
                  bookToUpdate,
                  "Book",
                  i => i.Title, i => i.Author,
-                 i => i.Price, i => i.PublishingDate, i => i.Publisher))
+                 i => i.Price, i => i.PublishingDate, 
+                 i => i.Publisher, i => i.Library))
             {
                 UpdateBookCategories(_context, selectedCategories, bookToUpdate);
                 await _context.SaveChangesAsync();

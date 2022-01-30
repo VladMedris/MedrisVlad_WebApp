@@ -43,6 +43,7 @@ namespace MedrisVlad_WebApp.Pages.Books
                 Book book = BookD.Books
                 .Where(i => i.ID == id.Value).Single();
                 BookD.Categories = book.BookCategories.Select(s => s.Category);
+     
             }
         }
     }
